@@ -1,5 +1,5 @@
 # unsplash-scraper
-A simple command line scraper for unspalsh.com.
+A simple command line scraper for https://unsplash.com/.
 
 ##Usage:
 
