@@ -25,7 +25,7 @@ var folder = '';
 /**
  *	Scrape wultiple pages into a given folder.
  */
-function scrapeImages(theStartPage, theEndPage, theFolder) {
+module.exports = function scrapeImages(theStartPage, theEndPage, theFolder) {
 
 	startPage = theStartPage;
 	endPage = theEndPage;
@@ -130,6 +130,3 @@ function downloadImage(link, path, callback) {
 
 	});
 }
-
-//The code that is run and uses the input from the user on the commandline.
-scrapeImages(parseInt(process.argv[2]), parseInt(process.argv[3]), process.argv[4]);
