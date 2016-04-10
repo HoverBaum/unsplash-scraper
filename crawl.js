@@ -26,11 +26,11 @@ var folder = '';
  *	Scrape wultiple pages into a given folder.
  */
 function scrapeImages(theStartPage, theEndPage, theFolder) {
-	
+
 	startPage = theStartPage;
 	endPage = theEndPage;
 	folder = theFolder;
-	
+
 	//remember how many pages we need to process.
 	pagesToProcess = endPage - startPage + 1;
 
@@ -39,12 +39,12 @@ function scrapeImages(theStartPage, theEndPage, theFolder) {
 		folder = 'photos';
 	}
 	folder += '/';
-	
+
 	//make sure the folder actually exists.
 	if (!fs.existsSync(folder)){
 		fs.mkdirSync(folder);
 	}
-	
+
 	console.log('Starting to scrape images, processing ' + pagesToProcess + ' pages.');
 	console.log('Scrapring images from page ' + theStartPage + ' to page ' + theEndPage + ' into folder ' + folder);
 
@@ -71,12 +71,12 @@ function scrapeNextPage() {
 function scrapePage(index, folder, callback) {
 	var url = 'http://unsplash.com/?page=' + index;
 	console.log('Getting all images for page ' + index);
-	
+
 	//Get the contents of the url and work with it.
 	request(url, function (err, resp, body) {
 		if (err) throw err;
 		$ = cheerio.load(body);
-		
+
 		//make sure to remember how many images there are to craw and how many we finished.
 		imagesToProcess[index] = $('.photo img').length;
 		imagesProcessed[index] = 0;
