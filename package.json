@@ -1,10 +1,13 @@
 {
-  "name": "unspal.com-crawler",
-  "main": "crawl.js",
-  "description": "A simple command line scraper for unsplash.com.",
-  "dependencies": {
-    "cheerio": "^0.19.0",
-    "commander": "^2.9.0",
-    "request": "^2.57.0"
-  }
+    "name": "uscrape",
+    "main": "bin/crawl.js",
+    "description": "A simple command line scraper for unsplash.com.",
+    "dependencies": {
+        "cheerio": "^0.19.0",
+        "commander": "^2.9.0",
+        "request": "^2.57.0"
+    },
+	"bin": {
+      "uscrape": "./bin/uscrape.js"
+    }
 }

@@ -6,56 +6,56 @@
 */
 
 
-var request = require('request');
-var cheerio = require('cheerio');
-var http = require('https');
-var fs = require('fs');
+const request = require('request')
+const cheerio = require('cheerio')
+const http = require('https')
+const fs = require('fs')
+const path = require('path')
 
 //Some counters to provide feedback.
-var pagesToProcess = 0;
-var pagesProcessed = 0;
-var imagesToProcess = [];
-var imagesProcessed = [];
+let pagesToProcess = 0
+let pagesProcessed = 0
+const imagesToProcess = []
+const imagesProcessed = []
 
 //Other things we need to remember.
-var startPage = 1;
-var endPage = 1;
-var folder = '';
+let startPage = 1
+let endPage = 1
 
 /**
  *	Scrape wultiple pages into a given folder.
  */
 module.exports = function scrapeImages(theStartPage, theEndPage, theFolder) {
 
-	startPage = theStartPage;
-	endPage = theEndPage;
-	folder = theFolder;
+	startPage = theStartPage
+	endPage = theEndPage
+	folder = theFolder
 
 	//remember how many pages we need to process.
-	pagesToProcess = endPage - startPage + 1;
+	pagesToProcess = endPage - startPage + 1
 
 	//Make sure folder is set, else set to default.
 	if (folder === undefined) {
-		folder = 'photos';
+		folder = 'photos'
 	}
-	folder += '/';
+	const absFolder = path.resolve(folder)
 
 	//make sure the folder actually exists.
 	if (!fs.existsSync(folder)){
-		fs.mkdirSync(folder);
+		fs.mkdirSync(folder)
 	}
 
-	console.log('Starting to scrape images, processing ' + pagesToProcess + ' pages.');
-	console.log('Scrapring images from page ' + theStartPage + ' to page ' + theEndPage + ' into folder ' + folder);
+	console.log('Starting to scrape images, processing ' + pagesToProcess + ' pages.')
+	console.log('Scrapring images from page ' + theStartPage + ' to page ' + theEndPage + ' into folder ' + absFolder)
 
 	//scrape all pages seperately.
-	scrapeNextPage();
+	scrapeNextPage(absFolder)
 }
 
 /**
 *	Starts the scraping of the next page.
 */
-function scrapeNextPage() {
+function scrapeNextPage(folder) {
 	console.log('Processed pages: ' + pagesProcessed + '/' + pagesToProcess);
 	console.log(' ');
 	if(startPage + pagesProcessed > endPage) {
@@ -69,35 +69,38 @@ function scrapeNextPage() {
  *	Scrape page into a given folder.
  */
 function scrapePage(index, folder, callback) {
-	var url = 'http://unsplash.com/?page=' + index;
-	console.log('Getting all images for page ' + index);
+	var url = 'http://unsplash.com/?page=' + index
+	console.log('Getting all images for page ' + index)
 
 	//Get the contents of the url and work with it.
 	request(url, function (err, resp, body) {
-		if (err) throw err;
-		$ = cheerio.load(body);
+		if (err) throw err
+		$ = cheerio.load(body)
 
 		//make sure to remember how many images there are to craw and how many we finished.
-		imagesToProcess[index] = $('.photo img').length;
-		imagesProcessed[index] = 0;
+		imagesToProcess[index] = $('.cV68d').length
+		imagesProcessed[index] = 0
 
 		//Iterate over all images on this page and get the links to download them.
-		$('.photo img').each(function () {
+		$('.cV68d').each(function () {
 			//console.log(this.attribs.src.split('?')[0]);
 
 			//generate the link to the non-cropped image.
-			var link = this.attribs.src.split('?')[0];
+			const link = this.attribs.style.split(';')
+			 	.filter(string => /^background-image/.test(string))[0]
+				.split('"')[1].split('?')[0]
 
 			//also generate a name for this iamge.
-			var name = link.split('/')[3];
-			var path = folder + name + '.jpg';
+			var name = link.split('/')[3]
+			var filePath = path.join(folder, name) + '.jpg'
+			console.log('getting image', name, link, filePath);
 
-			downloadImage(link, path, function() {
-				imagesProcessed[index] += 1;
-				console.log('Processing page: ' + index + ' scraped image: ' + imagesProcessed[index] + '/' + imagesToProcess[index]);
+			downloadImage(link, filePath, function() {
+				imagesProcessed[index] += 1
+				console.log('Processing page: ' + index + ' scraped image: ' + imagesProcessed[index] + '/' + imagesToProcess[index])
 				if(imagesProcessed[index] === imagesToProcess[index]) {
-					pagesProcessed += 1;
-					callback();
+					pagesProcessed += 1
+					callback()
 				}
 			});
 
@@ -124,7 +127,7 @@ function downloadImage(link, path, callback) {
 			//When all data is here, save image at provided path.
 			fs.writeFile(path, imagedata, 'binary', function (err) {
 				if (err) throw err
-				callback();
+				callback()
 			});
 		});
 
