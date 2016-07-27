@@ -93,14 +93,14 @@ function scrapePage(index, folder, callback) {
 			//also generate a name for this iamge.
 			var name = link.split('/')[3]
 			var filePath = path.join(folder, name) + '.jpg'
-			console.log('getting image', name, link, filePath);
+
 
 			downloadImage(link, filePath, function() {
 				imagesProcessed[index] += 1
 				console.log('Processing page: ' + index + ' scraped image: ' + imagesProcessed[index] + '/' + imagesToProcess[index])
 				if(imagesProcessed[index] === imagesToProcess[index]) {
 					pagesProcessed += 1
-					callback()
+					callback(folder)
 				}
 			});
 
