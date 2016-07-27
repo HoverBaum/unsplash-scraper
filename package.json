@@ -1,5 +1,6 @@
 {
     "name": "uscrape",
+    "version": "1.0.0",
     "main": "bin/crawl.js",
     "description": "A simple command line scraper for unsplash.com.",
     "dependencies": {
@@ -7,7 +8,18 @@
         "commander": "^2.9.0",
         "request": "^2.57.0"
     },
-	"bin": {
-      "uscrape": "./bin/uscrape.js"
-    }
+    "keywords": [
+        "unsplash", "scraper"
+    ],
+    "bugs": {
+        "url": "https://github.com/HoverBaum/unsplash-scraper/issues"
+    },
+    "bin": {
+        "uscrape": "./bin/uscrape.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com//HoverBaum/unsplash-scraper.git"
+    },
+    "author": "Hendrik Wallbaum <mail@hendrikwallbaum.de> (http://hendrikwallbaum.de)"
 }
